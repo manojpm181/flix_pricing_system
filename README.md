@@ -54,16 +54,29 @@ The **Flix Pricing Optimization System** analyzes large-scale pricing data (~800
 ```
 flix_pricing_system/
 │
-├── main.py                  # Data pipeline & ML logic
-├── dashboard.py             # Streamlit UI dashboard
-├── requirements.txt         # Dependencies
+├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── src/
+│   ├── data_loader.py
+│   ├── preprocess.py
+│   ├── clustering.py
+│   ├── pricing.py
+│
+├── app/
+│   └── streamlit_app.py
 │
 ├── outputs/
-│   ├── results.xlsx         # Lightweight report
-│   └── full_data.csv        # Complete dataset
+│   └── results.xlsx
+│   └──sample_data.csv
+│   └──summary.csv
+│   └──flagged_cases.csv
+├── docs/
+│   └── automation_plan.md
 │
-├── data/                    # Raw input data (optional)
-└── .venv/                   # Virtual environment
+├── main.py
+└── requirements.txt 
 ```
 
 ---
