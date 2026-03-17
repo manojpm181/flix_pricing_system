@@ -206,7 +206,17 @@ B.E. CSE
 manojpoojari1511@gmail.com
 
 ---
+## Result
+<img width="1915" height="690" alt="Screenshot 2026-03-17 175533" src="https://github.com/user-attachments/assets/7a780d12-9eb2-4d9a-8240-9b0a5e547690" />
+<img width="1497" height="621" alt="Screenshot 2026-03-17 175547" src="https://github.com/user-attachments/assets/8db258ab-9acf-4835-9f0d-2dfcdab352cc" />
+<img width="1480" height="558" alt="Screenshot 2026-03-17 175603" src="https://github.com/user-attachments/assets/86507407-08aa-414e-b241-434a40c26c40" />
+<img width="1434" height="562" alt="Screenshot 2026-03-17 175619" src="https://github.com/user-attachments/assets/091cde63-0f00-4e54-be8e-63e1acff5a92" />
+<img width="1482" height="583" alt="Screenshot 2026-03-17 175629" src="https://github.com/user-attachments/assets/a431d2cb-ee0a-4de4-b378-2ab88d8a20b7" />
+<img width="1472" height="530" alt="Screenshot 2026-03-17 175635" src="https://github.com/user-attachments/assets/20770f89-0db0-4e54-9426-8e7405bbf02a" />
+<img width="1519" height="549" alt="Screenshot 2026-03-17 175642" src="https://github.com/user-attachments/assets/9ed62b89-b45f-4e28-bf23-7cd8623c79f1" />
+<img width="1569" height="812" alt="Screenshot 2026-03-17 175702" src="https://github.com/user-attachments/assets/2d82f27a-f934-4441-b8ee-e560c8c897a2" />
 
+---
 ## 🏁 Conclusion
 
 This project demonstrates:
