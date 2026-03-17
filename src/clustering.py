@@ -10,32 +10,41 @@ def create_clusters(df):
     features = ['price', 'load', 'rating', 'reviews', 'rank']
     X = df[features].fillna(0)
 
-
-    sample_size = min(50000, len(df))  
+    # ✅ SAMPLE FOR CLUSTER SELECTION
+    sample_size = min(50000, len(df))
     X_sample = X.sample(sample_size, random_state=42)
-
 
     scaler = StandardScaler()
     X_sample_scaled = scaler.fit_transform(X_sample)
 
-
     best_k = 2
     best_score = -1
 
-    for k in range(2, 8):  
+    for k in range(2, 8):
         model = MiniBatchKMeans(
             n_clusters=k,
             random_state=42,
-            batch_size=10000
+            batch_size=10000,
+            n_init=10   # ✅ FIX WARNING
         )
 
         labels = model.fit_predict(X_sample_scaled)
 
-        
-        small_sample = X_sample_scaled[:10000]
-        small_labels = labels[:10000]
+        # ✅ SAFE SMALL RANDOM SAMPLE (NO MEMORY CRASH)
+        try:
+            sil_sample_size = min(2000, len(X_sample_scaled))
+            idx = pd.Series(range(len(X_sample_scaled))).sample(
+                sil_sample_size, random_state=42
+            )
 
-        score = silhouette_score(small_sample, small_labels)
+            small_sample = X_sample_scaled[idx]
+            small_labels = labels[idx]
+
+            score = silhouette_score(small_sample, small_labels)
+
+        except Exception:
+            print(f"⚠️ Skipping silhouette for k={k}")
+            continue
 
         if score > best_score:
             best_score = score
@@ -43,11 +52,12 @@ def create_clusters(df):
 
     print(f"✅ Best clusters: {best_k}")
 
-
+    # ✅ FINAL MODEL ON FULL DATA
     final_model = MiniBatchKMeans(
         n_clusters=best_k,
         random_state=42,
-        batch_size=10000
+        batch_size=10000,
+        n_init=10
     )
 
     X_scaled_full = scaler.transform(X)
@@ -56,6 +66,7 @@ def create_clusters(df):
     print("✅ Clustering Done (FAST 🚀)")
 
     return df
+
 
 
 # #More mathematically correct
