@@ -5,27 +5,39 @@ import os
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(page_title="Bus Pricing Dashboard", layout="wide")
-
 st.title("🚍 Bus Pricing Intelligence Dashboard")
 
 # ---------------- LOAD ----------------
 @st.cache_data
 def load_data():
-    import os
+    try:
+        if not os.path.exists("outputs/flagged_cases.csv"):
+            with st.spinner("⚙️ Running pricing pipeline... please wait (first time only)"):
+                from main import run_pipeline
+                run_pipeline()
 
-    if not os.path.exists("outputs/flagged_cases.csv"):
-        with st.spinner("⚙️ Running pricing pipeline... please wait (first time only)"):
-            from main import run_pipeline
-            run_pipeline()
+        df_flagged = pd.read_csv("outputs/flagged_cases.csv")
+        df_sample = pd.read_csv("outputs/sample_data.csv")
+        df_summary = pd.read_csv("outputs/summary.csv")
 
-    df_flagged = pd.read_csv("outputs/flagged_cases.csv")
-    df_sample = pd.read_csv("outputs/sample_data.csv")
-    df_summary = pd.read_csv("outputs/summary.csv")
+        return df_flagged, df_sample, df_summary
 
-    return df_flagged, df_sample, df_summary
+    except Exception as e:
+        st.error("❌ Failed to load or generate data")
+        st.exception(e)
+        st.stop()
+
+
+# ✅ IMPORTANT: CALL FUNCTION
+df_flagged, df_sample, df_summary = load_data()
 
 # ---------------- SAFE SORT ----------------
 order = ['LOW', 'OK', 'HIGH']
+
+if df_summary is None or df_summary.empty:
+    st.error("❌ Summary data missing")
+    st.stop()
+
 df_summary = df_summary[df_summary['Flag'].isin(order)]
 df_summary = df_summary.set_index('Flag').reindex(order).reset_index()
 
@@ -41,20 +53,9 @@ ok = df_summary[df_summary['Flag'] == "OK"]['Count'].sum()
 total = high + low + ok if (high + low + ok) > 0 else 1
 
 # ✅ PREMIUM KPI DESIGN
-col1.markdown(f"""
-### 🔴 High Price  
-## {high:,} ({high/total:.1%})
-""")
-
-col2.markdown(f"""
-### 🟡 Low Price  
-## {low:,} ({low/total:.1%})
-""")
-
-col3.markdown(f"""
-### 🟢 Optimal  
-## {ok:,} ({ok/total:.1%})
-""")
+col1.markdown(f"### 🔴 High Price\n## {high:,} ({high/total:.1%})")
+col2.markdown(f"### 🟡 Low Price\n## {low:,} ({low/total:.1%})")
+col3.markdown(f"### 🟢 Optimal\n## {ok:,} ({ok/total:.1%})")
 
 # ---------------- INSIGHTS ----------------
 st.markdown("### 📊 Insights")
@@ -171,7 +172,7 @@ st.download_button(
 
 # ---------------- FOOTER ----------------
 st.markdown("---")
-st.markdown("  Manoj P M |🚀 Built with Streamlit | Bus Pricing Intelligence System")
+st.markdown("Manoj P M | 🚀 Built with Streamlit | Bus Pricing Intelligence System")
 
 # import streamlit as st
 # import pandas as pd
