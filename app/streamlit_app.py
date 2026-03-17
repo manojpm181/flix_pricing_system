@@ -11,18 +11,18 @@ st.title("🚍 Bus Pricing Intelligence Dashboard")
 # ---------------- LOAD ----------------
 @st.cache_data
 def load_data():
+    import os
+
     if not os.path.exists("outputs/flagged_cases.csv"):
-        st.error("❌ Run main.py first")
-        st.stop()
+        with st.spinner("⚙️ Running pricing pipeline... please wait (first time only)"):
+            from main import run_pipeline
+            run_pipeline()
 
     df_flagged = pd.read_csv("outputs/flagged_cases.csv")
     df_sample = pd.read_csv("outputs/sample_data.csv")
     df_summary = pd.read_csv("outputs/summary.csv")
 
     return df_flagged, df_sample, df_summary
-
-
-df_flagged, df_sample, df_summary = load_data()
 
 # ---------------- SAFE SORT ----------------
 order = ['LOW', 'OK', 'HIGH']
