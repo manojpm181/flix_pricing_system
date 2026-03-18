@@ -127,7 +127,8 @@ python main.py
 ### 🔹 Step 2: Launch Dashboard
 
 ```
-streamlit run app/streamlit_app.py
+python -m streamlit run app/streamlit_app.py
+
 ```
 
 🌐 Open in browser:
